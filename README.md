@@ -1,4 +1,4 @@
-# Fire Size Prediction Using the Mesogeos Datacube
+# Fire Size Prediction Using the Mesogeos Datacube and Machine Learning
 
 A machine learning pipeline that classifies Mediterranean wildfire sizes (small, medium, large) from a 648GB spatio-temporal environmental dataset — built to run within a 12GB memory limit on Google Colab.
 
@@ -7,7 +7,7 @@ A machine learning pipeline that classifies Mediterranean wildfire sizes (small,
 
 ## Overview
 
-Wildfires in the Mediterranean are intensifying due to climate change, and predicting their severity ahead of time helps fire agencies allocate resources before fires grow. This project, completed for a graduate AI course at Purdue University, uses the [Mesogeos datacube](https://orionlab.space.noa.gr/mesogeos/) — a 648GB harmonized dataset of meteorological, vegetation, and soil moisture data covering the Mediterranean at 1km/daily resolution from 2006–2022 — to classify expected wildfire sizes from environmental conditions.
+Wildfires in the Mediterranean are intensifying due to climate change, and predicting their severity ahead of time helps fire agencies allocate resources before fires grow. This project, completed for a graduate AI course at Purdue University, uses the [Mesogeos datacube](https://orionlab.space.noa.gr/mesogeos/). It's a 648GB harmonized dataset of meteorological, vegetation, and soil moisture data covering the Mediterranean at 1km/daily resolution from 2006–2022. This is to classify expected wildfire sizes from environmental conditions.
 
 The pipeline predicts whether a fire will be **small** (<100 ha), **medium** (100–500 ha), or **large** (>500 ha), and generates risk maps that highlight priority regions for fire management planning.
 
@@ -26,11 +26,11 @@ The pipeline predicts whether a fire will be **small** (<100 ha), **medium** (10
                                                    scaling)
 ```
 
-**1. Memory-efficient data loading.** The datacube is loaded with xarray using optimized chunk parameters (`{'time': 20, 'x': 100, 'y': 100}`) and immediately subset to the Greek region (19.5–28.5°E, 34.5–42.0°N). This cut memory requirements ~85% versus naive loading and was the core challenge of the project — at 648GB, the dataset can never be held in RAM at once.
+**1. Memory-efficient data loading.** The datacube is loaded with xarray using optimized chunk parameters (`{'time': 20, 'x': 100, 'y': 100}`) and immediately subset to the Greek region (19.5–28.5°E, 34.5–42.0°N). This cut memory requirements ~85% versus naive loading and was the core challenge of the project. At 648GB, the dataset can never be held in RAM at once.
 
 **2. Preprocessing.** Five environmental variables known to drive fire behavior are extracted: temperature, relative humidity, wind speed, NDVI (vegetation health), and soil moisture index. Missing values (~10% of data, mostly from cloud cover) are mean-imputed per variable, and all features are standardized.
 
-**3. Surrogate risk modeling (DSAGE-inspired).** A Random Forest regressor, adapted from the [DSAGE](https://proceedings.neurips.cc/paper_files/paper/2022/file/f649556471416b35e60ae0de7c1e3619-Paper-Conference.pdf) surrogate approach, learns fire risk from a sample of locations and then predicts risk across the entire study grid — avoiding full-datacube computation while still producing region-wide risk maps.
+**3. Surrogate risk modeling (DSAGE-inspired).** A Random Forest regressor, adapted from the [DSAGE](https://proceedings.neurips.cc/paper_files/paper/2022/file/f649556471416b35e60ae0de7c1e3619-Paper-Conference.pdf) surrogate approach, learns fire risk from a sample of locations and then predicts risk across the entire study grid. It avoids full-datacube computation while still producing region-wide risk maps.
 
 **4. Fire size classification.** A TensorFlow neural network (64→32→3 architecture with batch normalization and dropout) classifies fire events into size categories. Feature importance analysis identified soil moisture (31.5%) and vegetation index (23.2%) as the strongest predictors, consistent with fire ecology.
 
