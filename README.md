@@ -44,7 +44,7 @@ Python · TensorFlow · scikit-learn · xarray · Zarr · NumPy · SciPy · Matp
 
 1. Clone the repo:
    ```bash
-   git clone https://github.com/eggsit9900/FireSizePrediction.git
+   git clone https://github.com/arizzuto98/FireSizePrediction.git
    cd FireSizePrediction
    ```
 2. Install dependencies:
