@@ -74,4 +74,4 @@ Planned improvements include training on real fire records, ensemble methods for
 
 ## Author
 
-**Anthony Rizzuto** Electrical Engineer | MS ECE candidate, Purdue University
+**Anthony Rizzuto** Electrical Engineer | M.S. ECE candidate, Purdue University
